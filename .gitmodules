@@ -1,6 +1,3 @@
-[submodule "contrib/contrib/secp256k1"]
-	path = contrib/contrib/secp256k1
-	url = https://github.com/bitcoin-core/secp256k1.git
 [submodule "contrib/secp256k1"]
 	path = contrib/secp256k1
 	url = https://github.com/bitcoin-core/secp256k1.git
