@@ -1,4 +1,4 @@
-package main
+package nostr_backup
 
 const (
 	KindSetMetadata              int = 0

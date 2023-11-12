@@ -1,6 +1,6 @@
 //go:build !prod
 
-package main
+package nostr_backup
 
 import "github.com/mmyoungman/nostr_backup/internal/json"
 
