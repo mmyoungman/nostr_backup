@@ -2,7 +2,7 @@ package main
 
 import (
 	"log"
-	"mmyoungman/nostr_backup/internal/websocket"
+	"github.com/mmyoungman/nostr_backup/internal/websocket"
 	"time"
 )
 

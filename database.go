@@ -3,7 +3,7 @@ package main
 import (
 	"database/sql"
 	"log"
-	"mmyoungman/nostr_backup/internal/json"
+	"github.com/mmyoungman/nostr_backup/internal/json"
 
 	_ "github.com/mattn/go-sqlite3"
 )

@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"mmyoungman/nostr_backup/internal/uuid"
+	"github.com/mmyoungman/nostr_backup/internal/uuid"
 )
 
 func main() {

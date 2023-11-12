@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"mmyoungman/nostr_backup/internal/json"
-	"mmyoungman/nostr_backup/internal/websocket"
+	"github.com/mmyoungman/nostr_backup/internal/json"
+	"github.com/mmyoungman/nostr_backup/internal/websocket"
 	"time"
 )
 

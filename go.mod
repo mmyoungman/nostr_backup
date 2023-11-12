@@ -1,4 +1,4 @@
-module mmyoungman/nostr_backup
+module github.com/mmyoungman/nostr_backup
 
 go 1.21.1
 

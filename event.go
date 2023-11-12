@@ -4,7 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"mmyoungman/nostr_backup/internal/schnorr"
+	"github.com/mmyoungman/nostr_backup/internal/schnorr"
 )
 
 type Event struct {
