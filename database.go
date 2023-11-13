@@ -60,7 +60,8 @@ func DBInsertEvent(db *sql.DB, event Event) (eventsAdded int) {
 func DBGetEvents(db *sql.DB) []Event {
 	stm, err := db.Prepare(`
 	SELECT id, pubkey, created_at, kind, tags, content, sig
-	FROM Events;`)
+	FROM Events
+	ORDER BY created_at;`)
 	if err != nil {
 		log.Fatal("Invalid SQL to select all events", err)
 	}
