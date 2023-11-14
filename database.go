@@ -83,7 +83,7 @@ func DBGetEvents(db *sql.DB) []Event {
 		if err != nil {
 			log.Fatal("Failed to read row of event from DB", err)
 		}
-		json.UnmarshalJSON([]byte(tags), event.Tags)
+		json.UnmarshalJSON([]byte(tags), &event.Tags)
 
 		events = append(events, event)
 	}
