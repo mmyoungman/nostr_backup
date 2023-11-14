@@ -34,6 +34,10 @@ func receiveMessages(server string, conn WSConnection, messageChan chan WSConnec
 				doneChan <- nil
 				return
 			}
+			if err.Error() == "websocket: close sent" {
+				doneChan <- nil
+				return
+			}
 			doneChan <- err
 			return
 		}
