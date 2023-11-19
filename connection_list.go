@@ -1,4 +1,4 @@
-package nostr_backup
+package main
 
 import (
 	"database/sql"
@@ -31,52 +31,52 @@ func (cl *ConnectionList) AddConnection(server string) {
 	cl.Connections = append(cl.Connections, newConn)
 }
 
-func (cp *ConnectionList) Close() {
-	for i := range cp.Connections {
-		cp.Connections[i].Close()
+func (cl *ConnectionList) Close() {
+	for i := range cl.Connections {
+		cl.Connections[i].Close()
 	}
-	close(cp.MessageChan)
+	close(cl.MessageChan)
 }
 
-func (cp *ConnectionList) CloseConnection(server string) {
-	for i := range cp.Connections {
-		if cp.Connections[i].Server == server {
-			cp.Connections[i].Close()
+func (cl *ConnectionList) CloseConnection(server string) {
+	for i := range cl.Connections {
+		if cl.Connections[i].Server == server {
+			cl.Connections[i].Close()
 
 			//assert len(Connections) == len(DoneChans)
 
-			// remove connection from connList arrays
-			numConns := len(cp.Connections)
-			cp.Connections[i] = cp.Connections[numConns-1]
-			cp.Connections = cp.Connections[:numConns-1]
+			// remove connection from cl arrays
+			numConns := len(cl.Connections)
+			cl.Connections[i] = cl.Connections[numConns-1]
+			cl.Connections = cl.Connections[:numConns-1]
 			return
 		}
 	}
 	log.Fatal("Cannot close connection", server, " as not in connection list")
 }
 
-func (cp *ConnectionList) CreateSubscriptions(subscriptionId string, filters Filters) {
-	for i := range cp.Connections {
-		cp.Connections[i].CreateSubscription(subscriptionId, filters)
+func (cl *ConnectionList) CreateSubscriptions(subscriptionId string, filters Filters) {
+	for i := range cl.Connections {
+		cl.Connections[i].CreateSubscription(subscriptionId, filters)
 	}
 }
 
-func (cp *ConnectionList) CloseSubscription(server string, subscriptionId string) {
-	for i := range cp.Connections {
-		if cp.Connections[i].Server == server {
-			cp.Connections[i].CloseSubscription(subscriptionId)
+func (cl *ConnectionList) CloseSubscription(server string, subscriptionId string) {
+	for i := range cl.Connections {
+		if cl.Connections[i].Server == server {
+			cl.Connections[i].CloseSubscription(subscriptionId)
 			return
 		}
 	}
 	log.Fatal("CloseSubscription fail! Could not find subscriptionId", subscriptionId, " for server", server)
 }
 
-func (cp *ConnectionList) EoseSubscription(server string, subscriptionId string) {
-	for i := range cp.Connections {
-		if cp.Connections[i].Server == server {
-			for j := range cp.Connections[i].Subscriptions {
-				if cp.Connections[i].Subscriptions[j].Id == subscriptionId {
-					cp.Connections[i].Subscriptions[j].Eose = true
+func (cl *ConnectionList) EoseSubscription(server string, subscriptionId string) {
+	for i := range cl.Connections {
+		if cl.Connections[i].Server == server {
+			for j := range cl.Connections[i].Subscriptions {
+				if cl.Connections[i].Subscriptions[j].Id == subscriptionId {
+					cl.Connections[i].Subscriptions[j].Eose = true
 					return
 				}
 			}
@@ -86,24 +86,24 @@ func (cp *ConnectionList) EoseSubscription(server string, subscriptionId string)
 	log.Fatal("EoseSubscription fail! Could not find server", server)
 }
 
-func (cp *ConnectionList) HasAllSubsEosed() bool {
-	for i := range cp.Connections {
-		if !cp.Connections[i].HasAllSubsEosed() {
+func (cl *ConnectionList) HasAllSubsEosed() bool {
+	for i := range cl.Connections {
+		if !cl.Connections[i].HasAllSubsEosed() {
 			return false
 		}
 	}
 	return true
 }
 
-func ProcessMessages(connList *ConnectionList, db *sql.DB) (numOfMessages int, numOfEventMessages int, numOfNewEvents int) {
+func (cl *ConnectionList) ProcessMessages(db *sql.DB) (numOfMessages int, numOfEventMessages int, numOfNewEvents int) {
 	for {
-		if connList.HasAllSubsEosed() {
+		if cl.HasAllSubsEosed() {
 			return
 		}
 
 		var connListMessage websocket.WSConnectionMessage
 		select {
-		case connListMessage = <-connList.MessageChan:
+		case connListMessage = <-cl.MessageChan:
 		case <-time.After(5 * time.Second):
 			fmt.Println("No new message received in 5 seconds")
 			return
@@ -145,8 +145,8 @@ func ProcessMessages(connList *ConnectionList, db *sql.DB) (numOfMessages int, n
 			if err != nil {
 				log.Fatal("Failed to unmarshal RelayEoseMessage.SubscriptionId", err)
 			}
-			connList.EoseSubscription(server, eoseMessage.SubscriptionId)
-			connList.CloseConnection(server)
+			cl.EoseSubscription(server, eoseMessage.SubscriptionId)
+			cl.CloseConnection(server)
 
 		case "OK":
 			var okMessage RelayOkMessage

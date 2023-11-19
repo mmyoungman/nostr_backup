@@ -1,6 +1,6 @@
 //go:build prod
 
-package nostr_backup
+package main
 
 // No declaration of func UNUSED here
 

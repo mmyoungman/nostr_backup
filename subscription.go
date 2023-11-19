@@ -1,4 +1,4 @@
-package nostr_backup
+package main
 
 type Subscription struct {
 	Id      string

@@ -7,13 +7,15 @@
 - Fetch other referenced events?
 - Check ConnectionList stuff is right
 - Sort out tags -> JSON in `writeFilter`
-
-### contrib
-
-`contrib/secp256k1` currently uses v0.4.0 (or commit `199d27cea32203b224b208627533c2e813cd3b21`)
-https://github.com/bitcoin-core/secp256k1/releases/tag/v0.4.0
+- Fetch other linked to nostr notes / threads?
+- Fetch any linked to media?
 
 ### To run
+
+First run
+```
+git submodule update --init
+```
 
 As a dev build:
 ```
